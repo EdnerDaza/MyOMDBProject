@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">My OMDB Project</string>
+    <string name="refresh">Refresh</string>
+    <string name="search_hint">Buscar Pelicula</string>
+    <string name="search_button">Buscar</string>
+    <string name="poster_movie">Poster Movie</string>
+    <string name="snackbar_title_not_found">The movie title you entered was not found</string>
+    <string name="snackbar_title_empty">Please enter a movie title</string>
+    <string name="network_not_available">Network not available! Please connect to the Internet.</string>
 </resources>
