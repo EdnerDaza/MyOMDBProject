@@ -7,16 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.daza.edner.myomdbproject.R;
-import com.daza.edner.myomdbproject.models.Movie;
+import com.daza.edner.myomdbproject.interfaces.OnMovieListener;
 import com.daza.edner.myomdbproject.models.SearchEntity;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHolder>{
@@ -24,15 +20,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
     private Context context;
     private int layout;
     private List<SearchEntity> movies;
+    private OnMovieListener onMovieListener;
 
-    public SearchAdapter(){
-
-    }
-
-    public SearchAdapter(Context context, int layout, List<SearchEntity> movies) {
+    public SearchAdapter(Context context, int layout, List<SearchEntity> movies, OnMovieListener onMovieListener) {
         this.context = context;
         this.layout = layout;
         this.movies = movies;
+        this.onMovieListener = onMovieListener;
     }
 
     @NonNull
@@ -43,7 +37,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int position) {
-        viewHolder.bind(movies.get(position));
+        viewHolder.bind(movies.get(position), onMovieListener);
     }
 
     @Override
@@ -63,7 +57,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
             //this.progressBarMovie = view.findViewById(R.id.pbImageDetail);
         }
 
-        private void bind(SearchEntity movie){
+        private void bind(final SearchEntity movie, final OnMovieListener onMovieListener){
             this.textViewMovie.setText(movie.getTitle().trim().toString());
             //this.progressBarMovie.setVisibility(View.VISIBLE);
             if(!movie.getPoster().isEmpty()) {
@@ -75,6 +69,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
             }else{
                 Picasso.get().load(R.drawable.poster).into(this.imageViewPoster);
             }
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onMovieListener.onItemClick(movie, getAdapterPosition());
+                }
+            });
 
 
         }

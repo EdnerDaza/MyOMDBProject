@@ -1,56 +1,74 @@
 package com.daza.edner.myomdbproject.activities;
 
+import android.content.Intent;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daza.edner.myomdbproject.R;
-import com.daza.edner.myomdbproject.adapters.MovieAdapter;
-import com.daza.edner.myomdbproject.adapters.SearchAdapter;
-import com.daza.edner.myomdbproject.interfaces.MovieInterface;
-import com.daza.edner.myomdbproject.models.Movie;
-import com.daza.edner.myomdbproject.models.Search;
-import com.daza.edner.myomdbproject.utils.API;
+import com.daza.edner.myomdbproject.models.SearchEntity;
+import com.daza.edner.myomdbproject.utils.CommonUtils;
+import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private ArrayList<Movie> arrayListMovies;
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private int count = 0;
+    private ImageView imageViewPoster;
+    private TextView textViewTitle;
+    private TextView textViewImdbId;
+    private TextView textViewYear;
+    private TextView textViewType;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        arrayListMovies = new ArrayList<Movie>();
-        recyclerView = findViewById(R.id.rvMovie);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        layoutManager = new StaggeredGridLayoutManager(getResources().
-                getInteger(R.integer.grid_column_count), StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
+        toolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        imageViewPoster = findViewById(R.id.main_backdrop);
+        Intent intent = getIntent();
+        SearchEntity searchEntity = (SearchEntity) intent.getSerializableExtra(CommonUtils.POST_KEY);
+        Toast.makeText(this,
+                searchEntity.getTitle()+" "+searchEntity.getYear(),
+                Snackbar.LENGTH_LONG).show();
+        if(!searchEntity.getPoster().isEmpty()) {
+            Picasso.get()
+                    .load(searchEntity.getPoster())
+                    .placeholder(R.drawable.ic_image_black_48dp)
+                    .error(R.drawable.ic_broken_image_black_48dp)
+                    .into(this.imageViewPoster);
+        }else{
+            Picasso.get().load(R.drawable.poster).into(this.imageViewPoster);
+        }
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
+        collapsingToolbarLayout.setTitle(searchEntity.getTitle());
+
+        textViewTitle = findViewById(R.id.grid_title);
+        textViewTitle.setText(searchEntity.getTitle());
+        textViewImdbId = findViewById(R.id.grid_imdbid);
+        textViewImdbId.setText(searchEntity.getImdbid());
+        textViewYear = findViewById(R.id.grid_year);
+        textViewYear.setText(searchEntity.getYear());
+        textViewType = findViewById(R.id.grid_type);
+        textViewType.setText(searchEntity.getType());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getMovies();
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
@@ -66,58 +84,5 @@ public class DetailActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void fillInfo(Movie movie) {
-        arrayListMovies.add(movie);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        layoutManager = new StaggeredGridLayoutManager(getResources().
-                getInteger(R.integer.grid_column_count), StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new MovieAdapter(this, R.layout.cardview_items, arrayListMovies);
-        recyclerView.setAdapter(adapter);
-    }
-
-    private void fillMovieList(Search search) {
-        //arrayListMovies.add(movie);
-        adapter = new SearchAdapter(this, R.layout.cardview_items, search.getSearch());
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
-
-    private void getMovie() {
-        MovieInterface service = API.getApi().create(MovieInterface.class);
-        Call<Movie> callMovie = service.getMovie();
-        callMovie.enqueue(new Callback<Movie>() {
-            @Override
-            public void onResponse(Call<Movie> call, Response<Movie> response) {
-                Toast.makeText(DetailActivity.this, response.body().toString(), Toast.LENGTH_LONG).show();
-                fillInfo(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<Movie> call, Throwable t) {
-                Toast.makeText(DetailActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void getMovies() {
-        MovieInterface service = API.getApi().create(MovieInterface.class);
-        Call<Search> callSearch = service.getSearch("inception", API.API_KEY);
-        callSearch.enqueue(new Callback<Search>() {
-            @Override
-            public void onResponse(Call<Search> call, Response<Search> response) {
-                Toast.makeText(DetailActivity.this, response.body().toString(), Toast.LENGTH_LONG).show();
-                fillMovieList(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<Search> call, Throwable t) {
-                Toast.makeText(DetailActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
+    }*/
 }

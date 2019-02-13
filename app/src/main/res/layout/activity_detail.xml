@@ -1,76 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activities.DetailActivity">
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/search_edittext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/search_hint"
-                android:imeOptions="actionSearch"
-                android:inputType="textCapSentences" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <Button
-            android:id="@+id/search_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/search_button" />
-
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progress_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/rvMovie"
-        app:layout_constraintEnd_toEndOf="@+id/rvMovie"
-        app:layout_constraintStart_toStartOf="@+id/rvMovie"
-        app:layout_constraintTop_toTopOf="@+id/rvMovie" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvMovie"
-        android:visibility="visible"
+    android:layout_height="match_parent">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/main.appbar"
+        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/cardview_items"
-        android:paddingBottom="28dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        android:layout_height="@dimen/app_bar_height"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/main_collapsing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="?attr/colorPrimary">
+            <ImageView
+                android:id="@+id/main_backdrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                android:src="@drawable/poster"
+                android:fitsSystemWindows="true"
+                android:transitionName="poster"
+                app:layout_collapseMode="parallax" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/text_protection_scrim_height"
+                android:layout_gravity="bottom"
+                android:layout_alignBottom="@+id/main_backdrop"
+                android:background="@drawable/photo_background_protection"/>
 
-</android.support.constraint.ConstraintLayout>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/main_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin"
+                />
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/activity_horizontal_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <android.support.v7.widget.GridLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            app:useDefaultMargins="true"
+            android:layout_height="match_parent"
+            app:columnCount="2">
+            <TextView
+                app:layout_column="0"
+                app:layout_row="0"
+                android:text="@string/title"
+                style="@style/left_column_bold" />
+            <TextView
+                style="@style/right_column_normal"
+                app:layout_column="1"
+                app:layout_row="0"
+                tools:text="@string/example_title"
+                android:id="@+id/grid_title" />
+            <TextView
+                style="@style/left_column_bold"
+                app:layout_column="0"
+                app:layout_row="1"
+                android:text="@string/type"/>
+            <TextView
+                style="@style/right_column_normal"
+                app:layout_column="1"
+                app:layout_row="1"
+                tools:text="@string/example_release"
+                android:id="@+id/grid_type" />
+            <TextView
+                style="@style/left_column_bold"
+                android:text="@string/imdbId"
+                app:layout_column="0"
+                app:layout_row="2" />
+            <TextView
+                style="@style/right_column_normal"
+                tools:text="@string/example_runtime"
+                app:layout_column="1"
+                app:layout_row="2"
+                android:id="@+id/grid_imdbid" />
+            <TextView
+                android:text="@string/year"
+                app:layout_column="0"
+                app:layout_row="3"
+                style="@style/left_column_bold" />
+            <TextView
+                style="@style/right_column_normal"
+                tools:text="@string/example_director"
+                app:layout_column="1"
+                app:layout_row="3"
+                android:id="@+id/grid_year" />
+
+        </android.support.v7.widget.GridLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

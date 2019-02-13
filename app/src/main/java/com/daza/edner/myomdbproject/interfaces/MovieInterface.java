@@ -11,10 +11,9 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface MovieInterface {
-    @GET("?i=tt3896198&apikey=acc49e6f")
-    Call<Movie> getMovie();
+    @GET("?")
+    Call<Movie> getMovie(@Query("i") String imdbId, @Query("apikey") String apikey);
 
     @GET("?")
     Call<Search> getSearch(@Query("s") String textSearch, @Query("apikey") String apikey);
-    //listRepos(@Path("user") String user)
 }

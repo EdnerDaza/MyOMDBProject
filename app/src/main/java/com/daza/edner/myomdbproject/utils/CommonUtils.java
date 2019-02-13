@@ -7,6 +7,8 @@ import android.net.NetworkInfo;
 import android.view.inputmethod.InputMethodManager;
 
 public class CommonUtils {
+
+    public static final String POST_KEY = "current_movie";
     /**
      * hides the keyboard
      * */

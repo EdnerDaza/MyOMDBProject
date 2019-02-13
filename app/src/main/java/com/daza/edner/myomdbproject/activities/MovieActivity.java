@@ -1,5 +1,6 @@
 package com.daza.edner.myomdbproject.activities;
 
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +18,9 @@ import com.daza.edner.myomdbproject.R;
 import com.daza.edner.myomdbproject.adapters.MyAdapter;
 import com.daza.edner.myomdbproject.adapters.SearchAdapter;
 import com.daza.edner.myomdbproject.interfaces.MovieInterface;
+import com.daza.edner.myomdbproject.interfaces.OnMovieListener;
 import com.daza.edner.myomdbproject.models.Search;
+import com.daza.edner.myomdbproject.models.SearchEntity;
 import com.daza.edner.myomdbproject.utils.API;
 import com.daza.edner.myomdbproject.utils.CommonUtils;
 
@@ -27,7 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MovieActivity extends AppCompatActivity implements View.OnClickListener{
+public class MovieActivity extends AppCompatActivity implements View.OnClickListener, OnMovieListener {
 
     private Button searchButton;
     private ArrayList<String> arrayListMovies;
@@ -104,7 +107,7 @@ public class MovieActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void searchMovietitle(Search search) {
-        adapter = new SearchAdapter(this, R.layout.cardview_movie_items, search.getSearch());
+        adapter = new SearchAdapter(this, R.layout.cardview_movie_items, search.getSearch(), this);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -138,5 +141,16 @@ public class MovieActivity extends AppCompatActivity implements View.OnClickList
             add("maggie");
             add("marge");
         }};
+    }
+
+    @Override
+    public void onItemClick(SearchEntity entity, int position) {
+        /*Snackbar.make(recyclerView,
+               entity.getTitle()+" "+position,
+                Snackbar.LENGTH_LONG).show();*/
+        Intent intent = new Intent(MovieActivity.this, DetailActivity.class);
+        //intent.putExtra("id", city.getId());
+        intent.putExtra(CommonUtils.POST_KEY, entity);
+        startActivity(intent);
     }
 }
