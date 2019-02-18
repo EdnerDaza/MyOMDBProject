@@ -1,4 +1,4 @@
-package com.daza.edner.myomdbproject.adapters;
+package com.daza.edner.myomdbproject.ui.list;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,23 +10,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.daza.edner.myomdbproject.R;
-import com.daza.edner.myomdbproject.interfaces.OnMovieListener;
-import com.daza.edner.myomdbproject.models.SearchEntity;
+import com.daza.edner.myomdbproject.data.models.SearchEntity;
 import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHolder>{
+public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MyViewHolder> {
 
     private Context context;
     private int layout;
     private List<SearchEntity> movies;
-    private OnMovieListener onMovieListener;
+    private MovieListListener movieListListener;
 
-    public SearchAdapter(Context context, int layout, List<SearchEntity> movies, OnMovieListener onMovieListener) {
+    public MovieListAdapter(Context context, int layout, List<SearchEntity> movies, MovieListListener movieListListener) {
         this.context = context;
         this.layout = layout;
         this.movies = movies;
-        this.onMovieListener = onMovieListener;
+        this.movieListListener = movieListListener;
     }
 
     @NonNull
@@ -37,7 +37,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int position) {
-        viewHolder.bind(movies.get(position), onMovieListener);
+        viewHolder.bind(movies.get(position), movieListListener);
     }
 
     @Override
@@ -57,8 +57,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
             //this.progressBarMovie = view.findViewById(R.id.pbImageDetail);
         }
 
-        private void bind(final SearchEntity movie, final OnMovieListener onMovieListener){
-            this.textViewMovie.setText(movie.getTitle().trim().toString());
+        private void bind(final SearchEntity movie, final MovieListListener movieListListener) {
+            this.textViewMovie.setText(movie.getTitle().trim());
             //this.progressBarMovie.setVisibility(View.VISIBLE);
             if(!movie.getPoster().isEmpty()) {
                 Picasso.get()
@@ -72,7 +72,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onMovieListener.onItemClick(movie, getAdapterPosition());
+                    movieListListener.onItemClick(movie, getAdapterPosition());
                 }
             });
 

@@ -1,4 +1,4 @@
-package com.daza.edner.myomdbproject.utils;
+package com.daza.edner.myomdbproject.data;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -1,6 +1,7 @@
-package com.daza.edner.myomdbproject.models;
+package com.daza.edner.myomdbproject.data.models;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class SearchEntity implements Serializable {
