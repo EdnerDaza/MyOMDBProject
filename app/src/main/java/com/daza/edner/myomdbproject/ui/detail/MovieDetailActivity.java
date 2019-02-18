@@ -1,25 +1,22 @@
-package com.daza.edner.myomdbproject.activities;
+package com.daza.edner.myomdbproject.ui.detail;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daza.edner.myomdbproject.R;
-import com.daza.edner.myomdbproject.models.SearchEntity;
+import com.daza.edner.myomdbproject.data.models.SearchEntity;
 import com.daza.edner.myomdbproject.utils.CommonUtils;
 import com.squareup.picasso.Picasso;
 
-import java.io.Serializable;
 
-
-public class DetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity {
 
     private ImageView imageViewPoster;
     private TextView textViewTitle;
@@ -31,7 +28,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_moviedetail);
         toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -50,7 +47,7 @@ public class DetailActivity extends AppCompatActivity {
         }else{
             Picasso.get().load(R.drawable.poster).into(this.imageViewPoster);
         }
-        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
+        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.main_collapsing);
         collapsingToolbarLayout.setTitle(searchEntity.getTitle());
 
         textViewTitle = findViewById(R.id.grid_title);
@@ -68,21 +65,4 @@ public class DetailActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-        //return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.refresh:
-                this.onResume();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
 }

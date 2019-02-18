@@ -1,13 +1,10 @@
 package com.daza.edner.myomdbproject.interfaces;
 
-import com.daza.edner.myomdbproject.models.Movie;
-import com.daza.edner.myomdbproject.models.Search;
-
-import java.util.ArrayList;
+import com.daza.edner.myomdbproject.data.models.Movie;
+import com.daza.edner.myomdbproject.data.models.Search;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface MovieInterface {
